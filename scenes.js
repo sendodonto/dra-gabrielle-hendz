@@ -55,7 +55,7 @@ async function setup(el, { fov = 30, z = 4, controls = false } = {}) {
 
 // ---------- Escultura do hero ----------
 async function sculpture(el) {
-  const { THREE, scene, camera, loop, resize } = await setup(el, { fov: 30, z: 5.2 });
+  const { THREE, scene, camera, loop, resize } = await setup(el, { fov: 30, z: 6.4 });
   const seg = lowEnd ? 48 : 96;
   const geo = new THREE.SphereGeometry(1, seg, seg);
   const base = geo.attributes.position.array.slice();
