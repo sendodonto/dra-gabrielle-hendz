@@ -200,7 +200,9 @@ async function curves(el) {
 
 const scenes = { sculpture, face, curves };
 if (webglOk()) {
-  document.querySelectorAll('[data-scene]').forEach((el) => {
+  // economia de dados: a escultura e so decoracao, entao nem baixa o three.js por ela
+  const saveData = navigator.connection?.saveData;
+  document.querySelectorAll(saveData ? '[data-scene]:not([data-scene=sculpture])' : '[data-scene]').forEach((el) => {
     const run = () => scenes[el.dataset.scene](el).catch((e) => { console.warn('3D indisponivel:', e); el.querySelector('.face__loading')?.replaceChildren('Explore as regiões pelos botões.'); });
     // o hero espera o navegador ficar livre para nao atrasar a primeira pintura
     el.dataset.scene === 'sculpture' ? (window.requestIdleCallback || setTimeout)(run, { timeout: 1200 }) : whenNear(el, run);

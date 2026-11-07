@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Dra. Gabrielle Hendz | Harmonização Facial e Glúteos em Lajeado - RS</title>
 <meta name="description" content="Dra. Gabrielle Hendz, biomédica esteta em Lajeado - RS, especialista em Harmonização Facial e Glúteos e criadora do método Bumbum Master. Agende sua avaliação.">
-<meta name="theme-color" content="#29221F">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#F1F1EF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#111010" media="(prefers-color-scheme: dark)">
 <link rel="canonical" href="https://sendodonto.github.io/dra-gabrielle-hendz/"><!-- TROCAR quando houver dominio -->
 <meta property="og:type" content="website">
 <meta property="og:locale" content="pt_BR">
@@ -14,10 +16,9 @@
 <meta property="og:image" content="https://sendodonto.github.io/dra-gabrielle-hendz/img/og.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@400;500;600;700&display=swap">
-<link rel="preload" as="image" href="img/hero.webp" fetchpriority="high">
+<link rel="preload" href="fonts/satoshi.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" as="image" href="img/hero-800.webp" imagesrcset="img/hero-800.webp 800w, img/hero.webp 1400w" imagesizes="(max-width: 899px) 92vw, 40vw" fetchpriority="high">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" href="styles.css">
 <script>document.documentElement.classList.add('js');</script>
 <script type="application/ld+json">
@@ -34,10 +35,20 @@
 }
 </script>
 <script type="importmap">
-{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/" } }
+{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/" } }
 </script>
 </head>
 <body>
+<!-- Icones: Tabler Icons (outline), MIT -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6l-12 12"/><path d="M6 6l12 12"/></symbol>
+  <symbol id="i-left" viewBox="0 0 24 24"><path d="M15 6l-6 6l6 6"/></symbol>
+  <symbol id="i-right" viewBox="0 0 24 24"><path d="M9 6l6 6l-6 6"/></symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24"><path d="M4 5m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"/><path d="M16 3l0 4"/><path d="M8 3l0 4"/><path d="M4 11l16 0"/><path d="M8 15h2v2h-2z"/></symbol>
+  <symbol id="i-insta" viewBox="0 0 24 24"><path d="M4 4m0 4a4 4 0 0 1 4 -4h8a4 4 0 0 1 4 4v8a4 4 0 0 1 -4 4h-8a4 4 0 0 1 -4 -4z"/><path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M16.5 7.5l0 .01"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M17 7l-10 10"/><path d="M8 7l9 0l0 9"/></symbol>
+</svg>
+
 <a class="skip" href="#conteudo">Pular para o conteúdo</a>
 <div class="top-sentinel" aria-hidden="true"></div>
 
@@ -45,152 +56,145 @@
   <div class="wrap header__bar">
     <a class="brand" href="#inicio" aria-label="Dra. Gabrielle Hendz, voltar ao início">
       <span class="brand__name">Gabrielle Hendz</span>
-      <span class="brand__sub">Biomédica Esteta</span>
+      <span class="brand__sub">Biomédica esteta</span>
     </a>
     <nav class="nav" aria-label="Principal">
       <ul>
-        <li><a href="#inicio">Início</a></li>
         <li><a href="#sobre">Sobre</a></li>
         <li><a href="#procedimentos">Procedimentos</a></li>
-        <li><a href="#bumbum-master">Método Bumbum Master</a></li>
+        <li><a href="#bumbum-master">Bumbum Master</a></li>
         <li><a href="#cursos">Cursos e mentorias</a></li>
         <li><a href="#contato">Contato</a></li>
       </ul>
     </nav>
-    <button class="btn btn--solid btn--sm header__cta" type="button" data-book>Agendar avaliação</button>
+    <button class="btn btn--primary btn--sm header__cta" type="button" data-book>Agendar avaliação</button>
     <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu" aria-label="Abrir menu"><span></span><span></span></button>
   </div>
   <div class="menu" id="menu" hidden>
     <nav class="wrap" aria-label="Menu">
       <ul>
-        <li><a href="#inicio">Início</a></li>
         <li><a href="#sobre">Sobre</a></li>
         <li><a href="#procedimentos">Procedimentos</a></li>
-        <li><a href="#bumbum-master">Método Bumbum Master</a></li>
+        <li><a href="#bumbum-master">Bumbum Master</a></li>
         <li><a href="#cursos">Cursos e mentorias</a></li>
         <li><a href="#contato">Contato</a></li>
       </ul>
-      <button class="btn btn--solid btn--block" type="button" data-book>Agendar avaliação</button>
+      <button class="btn btn--primary btn--block" type="button" data-book>Agendar avaliação</button>
     </nav>
   </div>
 </header>
 
 <main id="conteudo">
 
-  <!-- HERO -->
+  <!-- HERO: split assimetrico, foto real + escultura 3D -->
   <section class="hero" id="inicio" aria-labelledby="hero-title">
-    <div class="hero__grid wrap">
+    <div class="wrap hero__grid">
       <div class="hero__copy">
-        <h1 class="hero__title reveal" id="hero-title">Realce sua beleza.<br><em>Valorize sua essência.</em></h1>
-        <p class="hero__lead reveal">Estética personalizada, técnica e cuidado em cada detalhe.</p>
-        <div class="hero__actions reveal">
-          <button class="btn btn--solid" type="button" data-book>Agendar avaliação</button>
-          <a class="btn btn--line" href="#procedimentos">Conhecer procedimentos</a>
+        <h1 class="hero__title" id="hero-title"><span>Realce sua beleza.</span> <span class="accent">Valorize sua essência.</span></h1>
+        <p class="hero__lead">Estética personalizada, técnica e cuidado em cada detalhe.</p>
+        <div class="hero__actions">
+          <button class="btn btn--primary" type="button" data-book>Agendar avaliação</button>
+          <a class="btn btn--ghost" href="#procedimentos">Ver procedimentos</a>
         </div>
-        <ul class="authority reveal">
-          <li>Biomédica Esteta</li>
-          <li>Especialista em Harmonização Facial e Glúteos</li>
-          <li>Lajeado - RS</li>
-        </ul>
       </div>
-      <figure class="hero__media reveal">
-        <img src="img/hero.webp" width="1400" height="2100" fetchpriority="high" alt="Retrato profissional (foto provisória)">
+      <figure class="hero__media">
+        <img src="img/hero-800.webp" srcset="img/hero-800.webp 800w, img/hero.webp 1400w" sizes="(max-width: 899px) 92vw, 40vw" width="1400" height="2100" fetchpriority="high" alt="Retrato profissional (foto provisória)">
         <div class="hero__sculpture" data-scene="sculpture" aria-hidden="true"></div>
       </figure>
     </div>
+  </section>
+
+  <!-- CREDENCIAIS: faixa logo abaixo do hero -->
+  <section class="creds" aria-label="Credenciais">
+    <dl class="wrap creds__list">
+      <div><dt>Formação</dt><dd>Biomédica esteta</dd></div>
+      <div><dt>Especialidade</dt><dd>Harmonização Facial e Glúteos</dd></div>
+      <div><dt>Método</dt><dd>Criadora do Bumbum Master</dd></div>
+      <div><dt>Registro</dt><dd data-crbm>CRBM 4876</dd></div>
+    </dl>
   </section>
 
   <!-- SOBRE -->
   <section class="section about" id="sobre" aria-labelledby="sobre-title">
     <div class="wrap about__grid">
       <figure class="about__media reveal">
-        <img src="img/sobre.webp" width="1400" height="934" loading="lazy" decoding="async" alt="Profissional explicando a anatomia facial em um tablet (foto provisória)">
+        <img src="img/sobre-800.webp" srcset="img/sobre-800.webp 800w, img/sobre.webp 1400w" sizes="(max-width: 899px) 92vw, 55vw" width="1400" height="934" loading="lazy" decoding="async" alt="Profissional explicando a anatomia facial em um tablet (foto provisória)">
       </figure>
       <div class="about__copy reveal">
-        <h2 class="h2" id="sobre-title">Ciência, técnica e <em>sensibilidade.</em></h2>
+        <h2 class="h2" id="sobre-title">Ciência, técnica e sensibilidade.</h2>
         <p class="lead">Dra. Gabrielle Hendz é biomédica esteta, especialista em Harmonização Facial e Glúteos, criadora do método Bumbum Master.</p>
-        <dl class="facts">
-          <div><dt>Formação</dt><dd>Biomédica Esteta</dd></div>
-          <div><dt>Especialidade</dt><dd>Harmonização Facial e Glúteos</dd></div>
-          <div><dt>Método</dt><dd>Criadora do Bumbum Master</dd></div>
-          <div><dt>Registro</dt><dd data-crbm>CRBM 4876</dd></div>
-        </dl>
-        <p class="signature">Gabrielle Hendz</p>
       </div>
     </div>
   </section>
 
-  <!-- PROCEDIMENTOS: ROSTO 3D -->
+  <!-- PROCEDIMENTOS: ROSTO 3D + bento -->
   <section class="section face" id="procedimentos" aria-labelledby="face-title">
     <div class="wrap">
       <header class="section-head reveal">
-        <h2 class="h2" id="face-title">Conheça as possibilidades de <em>valorizar sua beleza.</em></h2>
-        <p class="lead">Gire o rosto, aproxime e toque nas regiões para conhecer cada uma. Modelo ilustrativo e educativo: a indicação de qualquer procedimento depende de avaliação.</p>
+        <h2 class="h2" id="face-title">Conheça as possibilidades de valorizar sua beleza.</h2>
+        <p class="lead">Gire o rosto e toque nas regiões. Modelo ilustrativo: a indicação de qualquer procedimento depende de avaliação.</p>
       </header>
 
       <div class="face__stage reveal">
         <div class="face__canvas" data-scene="face">
-          <p class="face__loading">Carregando a experiência 3D…</p>
+          <p class="face__loading">Carregando o rosto 3D…</p>
           <div class="face__hotspots"></div>
-          <p class="face__hint" aria-hidden="true">Arraste para girar · Pinça ou roda para aproximar</p>
+          <p class="face__hint" aria-hidden="true">Arraste para girar e toque nos pontos</p>
         </div>
         <aside class="face__panel" aria-live="polite">
           <div class="face__regions" role="group" aria-label="Regiões do rosto"></div>
           <div class="face__info">
             <h3 class="face__info-title">Escolha uma região</h3>
             <p class="face__info-text">Toque em um dos pontos do rosto ou nos botões acima.</p>
-            <button class="btn btn--solid btn--sm face__info-cta" type="button" data-book hidden>Consultar procedimento</button>
+            <button class="btn btn--primary btn--sm face__info-cta" type="button" data-book hidden>Agendar avaliação</button>
           </div>
         </aside>
       </div>
 
-      <div class="cats">
-        <article class="cat reveal">
-          <img src="img/facial.webp" width="1400" height="1750" loading="lazy" decoding="async" alt="Retrato feminino em fundo bege (foto provisória)">
-          <div class="cat__body">
-            <h3 class="cat__title">Harmonização Facial</h3>
+      <div class="bento">
+        <article class="cell cell--tall reveal">
+          <img src="img/facial-800.webp" srcset="img/facial-800.webp 800w, img/facial.webp 1400w" sizes="(max-width: 899px) 92vw, 50vw" width="1400" height="1750" loading="lazy" decoding="async" alt="Retrato feminino em fundo bege (foto provisória)">
+          <div class="cell__body">
+            <h3 class="cell__title">Harmonização Facial</h3>
             <p>Planejamento personalizado para valorizar as proporções e a identidade de cada rosto.</p>
-            <button class="link-btn" type="button" data-book="Harmonização facial">Consultar informações →</button>
+            <button class="link-btn" type="button" data-book="Harmonização facial" aria-label="Agendar avaliação de Harmonização Facial">Agendar avaliação <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></button>
           </div>
         </article>
-        <article class="cat reveal">
-          <img src="img/gluteos.webp" width="1400" height="934" loading="lazy" decoding="async" alt="Sala de atendimento clara e organizada (foto provisória)">
-          <div class="cat__body">
-            <h3 class="cat__title">Procedimentos para Glúteos</h3>
+        <article class="cell cell--wide reveal">
+          <img src="img/gluteos-800.webp" srcset="img/gluteos-800.webp 800w, img/gluteos.webp 1400w" sizes="(max-width: 899px) 92vw, 22vw" width="1400" height="934" loading="lazy" decoding="async" alt="Sala de atendimento clara e organizada (foto provisória)">
+          <div class="cell__body">
+            <h3 class="cell__title">Procedimentos para Glúteos</h3>
             <p>Uma das especialidades da Dra. Gabrielle, com avaliação individual de cada caso.</p>
-            <button class="link-btn" type="button" data-book="Procedimentos para glúteos">Consultar informações →</button>
+            <button class="link-btn" type="button" data-book="Procedimentos para glúteos" aria-label="Agendar avaliação de Procedimentos para Glúteos">Agendar avaliação <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></button>
           </div>
         </article>
-        <article class="cat reveal">
-          <img src="img/estetica.webp" width="1400" height="2098" loading="lazy" decoding="async" alt="Retrato de pele natural e luminosa (foto provisória)">
-          <div class="cat__body">
-            <h3 class="cat__title">Estética Facial</h3>
+        <article class="cell cell--wide reveal">
+          <img src="img/estetica-800.webp" srcset="img/estetica-800.webp 800w, img/estetica.webp 1400w" sizes="(max-width: 899px) 92vw, 22vw" width="1400" height="2098" loading="lazy" decoding="async" alt="Retrato de pele natural e luminosa (foto provisória)">
+          <div class="cell__body">
+            <h3 class="cell__title">Estética Facial</h3>
             <p>Cuidados com a pele e o rosto, definidos a partir de uma avaliação completa.</p>
-            <button class="link-btn" type="button" data-book="Estética facial">Consultar informações →</button>
+            <button class="link-btn" type="button" data-book="Estética facial" aria-label="Agendar avaliação de Estética Facial">Agendar avaliação <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></button>
           </div>
         </article>
       </div>
     </div>
   </section>
 
-  <!-- METODO BUMBUM MASTER -->
+  <!-- METODO BUMBUM MASTER: palco 3D em largura total -->
   <section class="method" id="bumbum-master" aria-labelledby="method-title">
     <div class="method__scene" data-scene="curves" aria-hidden="true"></div>
-    <div class="wrap method__grid">
+    <div class="wrap method__inner">
       <div class="method__copy reveal">
-        <h2 class="method__title" id="method-title">Bumbum <em>Master</em></h2>
+        <h2 class="method__title" id="method-title">Bumbum <span class="accent">Master</span></h2>
         <p class="method__text">Um método criado pela Dra. Gabrielle Hendz para os procedimentos de glúteos, com planejamento individual e a assinatura técnica da profissional.</p>
-        <!-- TROCAR: espaço para a Dra. explicar como o método funciona -->
-        <ol class="method__steps">
-          <li><span>01</span>Avaliação individual</li>
-          <li><span>02</span>Planejamento personalizado</li>
-          <li><span>03</span>Acompanhamento</li>
-        </ol>
-        <button class="btn btn--champagne" type="button" data-book="Método Bumbum Master">Conhecer o método</button>
+        <button class="btn btn--primary" type="button" data-book="Método Bumbum Master">Agendar avaliação</button>
       </div>
-      <figure class="method__media reveal">
-        <img src="img/metodo.webp" width="1400" height="934" loading="lazy" decoding="async" alt="Profissional de estética se preparando para um atendimento (foto provisória)">
-      </figure>
+      <!-- TROCAR: a Dra. explica aqui como o metodo funciona -->
+      <ol class="method__steps reveal" aria-label="Como funciona">
+        <li><strong>Avaliação individual</strong><span>Entender o seu objetivo e o seu corpo.</span></li>
+        <li><strong>Planejamento personalizado</strong><span>Definir o caminho certo para o seu caso.</span></li>
+        <li><strong>Acompanhamento</strong><span>Cuidado antes, durante e depois.</span></li>
+      </ol>
     </div>
   </section>
 
@@ -198,14 +202,14 @@
   <section class="section results" id="resultados" aria-labelledby="results-title">
     <div class="wrap">
       <header class="section-head reveal">
-        <h2 class="h2" id="results-title">Histórias <em>reais.</em></h2>
+        <h2 class="h2" id="results-title">Resultados e depoimentos.</h2>
       </header>
       <div class="results__compare"></div>
       <ul class="results__gallery"></ul>
       <div class="results__quotes"></div>
       <div class="results__empty reveal">
         <p>Em breve, resultados e depoimentos reais de pacientes, publicados somente com autorização.</p>
-        <a class="btn btn--line" data-insta href="https://www.instagram.com/dra.gabriellehendz/" target="_blank" rel="noopener">Ver no Instagram</a>
+        <a class="btn btn--ghost" data-insta href="https://www.instagram.com/dra.gabriellehendz/" target="_blank" rel="noopener"><svg class="i" aria-hidden="true"><use href="#i-insta"/></svg>Ver no Instagram</a>
       </div>
     </div>
   </section>
@@ -214,44 +218,41 @@
   <section class="section courses" id="cursos" aria-labelledby="courses-title">
     <div class="wrap courses__grid">
       <div class="courses__intro reveal">
-        <h2 class="h2" id="courses-title">Conhecimento que <em>transforma profissionais.</em></h2>
-        <img src="img/cursos.webp" width="1400" height="934" loading="lazy" decoding="async" alt="Profissional explicando anatomia facial em um tablet (foto provisória)">
+        <h2 class="h2" id="courses-title">Conhecimento que transforma profissionais.</h2>
+        <img src="img/cursos-800.webp" srcset="img/cursos-800.webp 800w, img/cursos.webp 1400w" sizes="(max-width: 899px) 92vw, 42vw" width="1400" height="934" loading="lazy" decoding="async" alt="Profissional explicando anatomia facial em um tablet (foto provisória)">
       </div>
-      <div class="courses__cards">
-        <article class="course reveal">
+      <div class="courses__list reveal">
+        <article class="course">
           <h3>Cursos</h3>
           <p>Formações na área da estética. Datas, conteúdos e inscrições serão divulgados pela Dra. Gabrielle.</p>
-          <button class="link-btn" type="button" data-book="Cursos e mentorias">Quero saber das próximas turmas →</button>
         </article>
-        <article class="course reveal">
+        <article class="course">
           <h3>Mentorias</h3>
           <p>Acompanhamento para profissionais que querem evoluir na prática e no posicionamento.</p>
-          <button class="link-btn" type="button" data-book="Cursos e mentorias">Quero saber da mentoria →</button>
         </article>
-        <article class="course reveal">
+        <article class="course">
           <h3>Desenvolvimento profissional</h3>
           <p>Conteúdos de formação e atualização para quem atua na estética.</p>
-          <button class="link-btn" type="button" data-book="Cursos e mentorias">Quero receber informações →</button>
         </article>
+        <button class="btn btn--ghost courses__cta" type="button" data-book="Cursos e mentorias">Quero informações</button>
       </div>
     </div>
   </section>
 
-  <!-- INSTAGRAM -->
-  <section class="section insta" aria-labelledby="insta-title">
-    <div class="wrap insta__box reveal">
-      <h2 class="h2" id="insta-title"><a data-insta href="https://www.instagram.com/dra.gabriellehendz/" target="_blank" rel="noopener">@dra.gabriellehendz</a></h2>
-      <p class="lead">Rotina, bastidores e conteúdos sobre estética no perfil oficial.</p>
-      <a class="btn btn--solid" data-insta href="https://www.instagram.com/dra.gabriellehendz/" target="_blank" rel="noopener">Conheça mais no Instagram</a>
-    </div>
-  </section>
-
-  <!-- CTA -->
-  <section class="cta" id="contato" aria-labelledby="cta-title">
-    <div class="wrap cta__inner reveal">
-      <h2 class="cta__title" id="cta-title">Sua beleza, com <em>a sua essência.</em></h2>
-      <p>Agende uma avaliação em Lajeado - RS e converse com a Dra. Gabrielle sobre o seu objetivo.</p>
-      <button class="btn btn--champagne" type="button" data-book>Agendar avaliação</button>
+  <!-- CONTATO + INSTAGRAM -->
+  <section class="section contact" id="contato" aria-labelledby="cta-title">
+    <div class="wrap contact__grid">
+      <div class="contact__main reveal">
+        <h2 class="contact__title" id="cta-title">Sua beleza, com a sua essência.</h2>
+        <p>Agende uma avaliação em Lajeado - RS e converse com a Dra. Gabrielle sobre o seu objetivo.</p>
+        <button class="btn btn--primary" type="button" data-book>Agendar avaliação</button>
+      </div>
+      <a class="contact__insta reveal" data-insta href="https://www.instagram.com/dra.gabriellehendz/" target="_blank" rel="noopener">
+        <svg class="i i--lg" aria-hidden="true"><use href="#i-insta"/></svg>
+        <span class="contact__handle">@dra.gabriellehendz</span>
+        <span class="contact__note">Rotina, bastidores e conteúdos sobre estética no perfil oficial.</span>
+        <span class="contact__go">Ver Instagram <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></span>
+      </a>
     </div>
   </section>
 </main>
@@ -259,14 +260,14 @@
 <footer class="footer">
   <div class="wrap footer__grid">
     <div>
-      <p class="brand brand--light"><span class="brand__name">Gabrielle Hendz</span><span class="brand__sub">Biomédica Esteta · <span data-crbm>CRBM 4876</span></span></p>
+      <p class="brand"><span class="brand__name">Gabrielle Hendz</span><span class="brand__sub">Biomédica esteta · <span data-crbm>CRBM 4876</span></span></p>
       <p class="footer__text">Harmonização Facial e Glúteos. Criadora do método Bumbum Master.</p>
     </div>
     <nav aria-label="Rodapé"><ul>
       <li><a href="#sobre">Sobre</a></li><li><a href="#procedimentos">Procedimentos</a></li><li><a href="#bumbum-master">Bumbum Master</a></li><li><a href="#cursos">Cursos e mentorias</a></li>
     </ul></nav>
     <ul>
-      <li><a data-insta href="https://www.instagram.com/dra.gabriellehendz/" target="_blank" rel="noopener">Instagram @dra.gabriellehendz</a></li>
+      <li><a data-insta href="https://www.instagram.com/dra.gabriellehendz/" target="_blank" rel="noopener">Instagram</a></li>
       <li data-wa-only hidden><a data-wa-link href="#" target="_blank" rel="noopener">WhatsApp</a></li>
       <li>Lajeado - RS</li>
       <li><a href="privacidade.html">Política de privacidade</a></li>
@@ -278,32 +279,30 @@
   </div>
 </footer>
 
-<button class="float-btn" type="button" data-book aria-label="Agendar avaliação">
-  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1.3-3.9A8 8 0 1 1 8 19.3z"/></svg>
-</button>
+<button class="float-btn" type="button" data-book aria-label="Agendar avaliação"><svg class="i" aria-hidden="true"><use href="#i-calendar"/></svg></button>
 
 <!-- AGENDAMENTO -->
 <dialog class="book" aria-labelledby="book-title">
   <form class="book__form" novalidate>
-    <button class="book__close" type="button" aria-label="Fechar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <button class="book__close" type="button" aria-label="Fechar"><svg class="i" aria-hidden="true"><use href="#i-x"/></svg></button>
     <h2 class="book__title" id="book-title">Agendar avaliação</h2>
     <label>Nome<input name="nome" autocomplete="name" required></label>
     <label>WhatsApp<input name="whats" type="tel" inputmode="tel" autocomplete="tel" placeholder="(51) 99999-9999" required></label>
     <label>Procedimento de interesse<select name="proc" required></select></label>
     <label>Mensagem <span class="opt">(opcional)</span><textarea name="msg" rows="3"></textarea></label>
     <p class="book__error" role="alert" hidden></p>
-    <button class="btn btn--solid btn--block" type="submit"><span>Continuar no <span data-channel>WhatsApp</span></span></button>
+    <button class="btn btn--primary btn--block" type="submit"><span>Continuar no <span data-channel>WhatsApp</span></span></button>
     <p class="book__note"></p>
   </form>
 </dialog>
 
 <!-- LIGHTBOX -->
 <dialog class="lightbox" aria-label="Imagem ampliada">
-  <img src="img/hero.webp" loading="lazy" alt="">
+  <img src="img/hero-800.webp" loading="lazy" alt="">
   <p class="lightbox__cap"></p>
-  <button class="lightbox__btn lightbox__close" type="button" aria-label="Fechar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
-  <button class="lightbox__btn lightbox__prev" type="button" aria-label="Anterior"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
-  <button class="lightbox__btn lightbox__next" type="button" aria-label="Próxima"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+  <button class="lightbox__btn lightbox__close" type="button" aria-label="Fechar"><svg class="i" aria-hidden="true"><use href="#i-x"/></svg></button>
+  <button class="lightbox__btn lightbox__prev" type="button" aria-label="Anterior"><svg class="i" aria-hidden="true"><use href="#i-left"/></svg></button>
+  <button class="lightbox__btn lightbox__next" type="button" aria-label="Próxima"><svg class="i" aria-hidden="true"><use href="#i-right"/></svg></button>
 </dialog>
 
 <script src="config.js"></script>

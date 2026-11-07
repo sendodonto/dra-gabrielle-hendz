@@ -1,4 +1,4 @@
-/* Dra. Gabrielle Hendz — interface (sem dependencias). O 3D fica em scenes.js. */
+/* Dra. Gabrielle Hendz: interface (sem dependencias). O 3D fica em scenes.js. */
 (() => {
   const S = window.SITE;
   const root = document.documentElement;
@@ -136,7 +136,7 @@
     <figure class="ba-wrap"><div class="ba" style="--pos:50%">
       <img src="${esc(r.antes)}" alt="Antes: ${esc(r.legenda || '')}" loading="lazy">
       <img class="ba__after" src="${esc(r.depois)}" alt="Depois: ${esc(r.legenda || '')}" loading="lazy">
-      <span class="ba__line"></span><span class="ba__tags"><span>Antes</span><span>Depois</span></span>
+      <span class="ba__line"><span class="ba__knob"><svg class="i" aria-hidden="true"><use href="#i-left"/></svg><svg class="i" aria-hidden="true"><use href="#i-right"/></svg></span></span><span class="ba__tags"><span>Antes</span><span>Depois</span></span>
       <input class="ba__range" type="range" min="0" max="100" value="50" aria-label="Comparar antes e depois${r.legenda ? ': ' + esc(r.legenda) : ''}">
     </div>${r.legenda ? `<figcaption>${esc(r.legenda)}</figcaption>` : ''}</figure>`).join('');
   $$('.ba__range').forEach((input) => input.addEventListener('input', () => input.parentElement.style.setProperty('--pos', `${input.value}%`)));
