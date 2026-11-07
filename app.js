@@ -107,26 +107,67 @@
     dlg.close();
   });
 
-  // ---------- Regioes do rosto (painel; o 3D escuta o mesmo evento) ----------
+  // ---------- Rosto interativo: chips, pontos na foto, zoom na regiao e leve inclinacao 3D ----------
   const regionsBox = $('.face__regions');
   const info = $('.face__info');
+  const photo = $('.face__photo');
+  const layer = $('.face__layer', photo);
+  const resetBtn = $('.face__reset', photo);
+  const intro = { title: $('.face__info-title', info).textContent, text: $('.face__info-text', info).textContent };
+  const pick = (key) => document.dispatchEvent(new CustomEvent('region:select', { detail: key }));
   Object.entries(S.regioes).forEach(([key, r]) => {
     const b = document.createElement('button');
     b.type = 'button'; b.className = 'chip'; b.dataset.region = key;
     b.setAttribute('aria-pressed', 'false'); b.textContent = r.nome;
-    b.addEventListener('click', () => document.dispatchEvent(new CustomEvent('region:select', { detail: key })));
+    b.addEventListener('click', () => pick(key));
     regionsBox.append(b);
+    const h = document.createElement('button');
+    h.type = 'button'; h.className = 'hotspot'; h.dataset.region = key;
+    h.style.left = `${r.pos[0]}%`; h.style.top = `${r.pos[1]}%`;
+    const label = document.createElement('span');
+    label.className = 'hotspot__label'; label.textContent = r.nome;
+    h.append(label);
+    h.setAttribute('aria-label', r.nome);
+    h.addEventListener('click', () => pick(key));
+    $('.face__hotspots', photo).append(h);
   });
+  const swap = (title, text) => {
+    $('.face__info-title', info).textContent = title;
+    $('.face__info-text', info).textContent = text;
+    info.classList.remove('is-swap'); void info.offsetWidth; info.classList.add('is-swap');
+  };
   document.addEventListener('region:select', ({ detail: key }) => {
     const r = S.regioes[key];
-    if (!r) return;
     $$('.chip', regionsBox).forEach((c) => c.setAttribute('aria-pressed', String(c.dataset.region === key)));
-    $('.face__info-title', info).textContent = r.nome;
-    $('.face__info-text', info).textContent = r.texto;
-    const cta = $('.face__info-cta', info);
-    cta.hidden = false; cta.dataset.book = 'Harmonização facial';
-    info.classList.remove('is-swap'); void info.offsetWidth; info.classList.add('is-swap');
+    $$('.hotspot', photo).forEach((h) => h.classList.toggle('is-active', h.dataset.region === key));
+    if (!r) { photo.classList.remove('is-zoomed'); resetBtn.hidden = true; swap(intro.title, intro.text); return; }
+    // o zoom parte do ponto escolhido: a foto aproxima "em direcao" a regiao
+    layer.style.transformOrigin = `${r.pos[0]}% ${r.pos[1]}%`;
+    photo.classList.add('is-zoomed'); resetBtn.hidden = false;
+    swap(r.nome, r.texto);
   });
+  resetBtn.addEventListener('click', () => pick(null));
+  photo.addEventListener('keydown', (e) => { if (e.key === 'Escape' && photo.classList.contains('is-zoomed')) pick(null); });
+
+  // inclinacao: so com mouse e sem movimento reduzido; segue o ponteiro com amortecimento (rAF, sem scroll listener)
+  if (matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)').matches) {
+    const tilt = $('.face__tilt', photo);
+    const cur = { x: 0, y: 0 }, tgt = { x: 0, y: 0 };
+    let raf = 0;
+    const step = () => {
+      cur.x += (tgt.x - cur.x) * 0.12; cur.y += (tgt.y - cur.y) * 0.12;
+      tilt.style.transform = `rotateX(${cur.y.toFixed(3)}deg) rotateY(${cur.x.toFixed(3)}deg)`;
+      raf = Math.abs(tgt.x - cur.x) + Math.abs(tgt.y - cur.y) > 0.01 ? requestAnimationFrame(step) : 0;
+    };
+    const kick = () => { if (!raf) raf = requestAnimationFrame(step); };
+    photo.addEventListener('pointermove', (e) => {
+      const b = photo.getBoundingClientRect();
+      tgt.x = ((e.clientX - b.left) / b.width - 0.5) * 8;
+      tgt.y = -((e.clientY - b.top) / b.height - 0.5) * 8;
+      kick();
+    });
+    photo.addEventListener('pointerleave', () => { tgt.x = 0; tgt.y = 0; kick(); });
+  }
 
   // ---------- Resultados (so com fotos reais e autorizadas do config) ----------
   const hasResults = S.antesDepois.length || S.galeria.length || S.depoimentos.length;

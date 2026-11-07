@@ -132,44 +132,40 @@
     <div class="wrap">
       <header class="section-head reveal">
         <h2 class="h2" id="face-title">Conheça as possibilidades de valorizar sua beleza.</h2>
-        <p class="lead">Gire o rosto e toque nas regiões. Modelo ilustrativo: a indicação de qualquer procedimento depende de avaliação.</p>
+        <p class="lead">Toque nas regiões do rosto para conhecer cada uma. Imagem ilustrativa: a indicação de qualquer procedimento depende de avaliação.</p>
       </header>
 
       <div class="face__stage reveal">
-        <div class="face__canvas" data-scene="face">
-          <p class="face__loading">Carregando o rosto 3D…</p>
-          <div class="face__hotspots"></div>
-          <p class="face__hint" aria-hidden="true">Arraste para girar e toque nos pontos</p>
+        <div class="face__photo">
+          <div class="face__tilt">
+            <div class="face__layer">
+              <img src="img/facial-800.webp" srcset="img/facial-800.webp 800w, img/facial.webp 1400w" sizes="(max-width: 899px) 92vw, 46vw" width="1400" height="1750" loading="lazy" decoding="async" alt="Retrato feminino de frente, usado para mostrar as regiões do rosto (foto provisória)">
+              <div class="face__hotspots"></div>
+            </div>
+          </div>
+          <button class="face__reset" type="button" hidden>Ver rosto inteiro</button>
         </div>
         <aside class="face__panel" aria-live="polite">
           <div class="face__regions" role="group" aria-label="Regiões do rosto"></div>
           <div class="face__info">
-            <h3 class="face__info-title">Escolha uma região</h3>
-            <p class="face__info-text">Toque em um dos pontos do rosto ou nos botões acima.</p>
-            <button class="btn btn--primary btn--sm face__info-cta" type="button" data-book hidden>Agendar avaliação</button>
+            <h3 class="face__info-title">Harmonização Facial</h3>
+            <p class="face__info-text">Planejamento personalizado para valorizar as proporções e a identidade de cada rosto. Toque em um ponto para conhecer cada região.</p>
+            <button class="btn btn--primary btn--sm face__info-cta" type="button" data-book="Harmonização facial">Agendar avaliação</button>
           </div>
         </aside>
       </div>
 
       <div class="bento">
-        <article class="cell cell--tall reveal">
-          <img src="img/facial-800.webp" srcset="img/facial-800.webp 800w, img/facial.webp 1400w" sizes="(max-width: 899px) 92vw, 50vw" width="1400" height="1750" loading="lazy" decoding="async" alt="Retrato feminino em fundo bege (foto provisória)">
-          <div class="cell__body">
-            <h3 class="cell__title">Harmonização Facial</h3>
-            <p>Planejamento personalizado para valorizar as proporções e a identidade de cada rosto.</p>
-            <button class="link-btn" type="button" data-book="Harmonização facial" aria-label="Agendar avaliação de Harmonização Facial">Agendar avaliação <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></button>
-          </div>
-        </article>
-        <article class="cell cell--wide reveal">
-          <img src="img/gluteos-800.webp" srcset="img/gluteos-800.webp 800w, img/gluteos.webp 1400w" sizes="(max-width: 899px) 92vw, 22vw" width="1400" height="934" loading="lazy" decoding="async" alt="Sala de atendimento clara e organizada (foto provisória)">
+        <article class="cell reveal">
+          <img src="img/gluteos-800.webp" srcset="img/gluteos-800.webp 800w, img/gluteos.webp 1400w" sizes="(max-width: 899px) 92vw, 46vw" width="1400" height="934" loading="lazy" decoding="async" alt="Sala de atendimento clara e organizada (foto provisória)">
           <div class="cell__body">
             <h3 class="cell__title">Procedimentos para Glúteos</h3>
             <p>Uma das especialidades da Dra. Gabrielle, com avaliação individual de cada caso.</p>
             <button class="link-btn" type="button" data-book="Procedimentos para glúteos" aria-label="Agendar avaliação de Procedimentos para Glúteos">Agendar avaliação <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></button>
           </div>
         </article>
-        <article class="cell cell--wide reveal">
-          <img src="img/estetica-800.webp" srcset="img/estetica-800.webp 800w, img/estetica.webp 1400w" sizes="(max-width: 899px) 92vw, 22vw" width="1400" height="2098" loading="lazy" decoding="async" alt="Retrato de pele natural e luminosa (foto provisória)">
+        <article class="cell reveal">
+          <img src="img/estetica-800.webp" srcset="img/estetica-800.webp 800w, img/estetica.webp 1400w" sizes="(max-width: 899px) 92vw, 40vw" width="1400" height="2098" loading="lazy" decoding="async" alt="Retrato de pele natural e luminosa (foto provisória)">
           <div class="cell__body">
             <h3 class="cell__title">Estética Facial</h3>
             <p>Cuidados com a pele e o rosto, definidos a partir de uma avaliação completa.</p>
