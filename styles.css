@@ -139,16 +139,19 @@ ul, ol { padding: 0; list-style: none; }
 /* o canvas nao pode dar tamanho ao container: senao o ResizeObserver cresce sem parar */
 [data-scene] canvas { display: block; position: absolute; inset: 0; width: 100%; height: 100%; }
 
-/* rosto interativo: foto real, pontos, zoom na regiao e inclinacao leve */
+/* busto 360: quadros reais de um giro; o fundo do card e o mesmo cinza de estudio do video */
 .face__stage { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 64px); align-items: center; }
-.face__photo { position: relative; overflow: hidden; border-radius: var(--r-media); background: var(--surface-2); perspective: 1100px; }
-.face__tilt { transform-style: preserve-3d; will-change: transform; }
-.face__layer { --z: 1; position: relative; transform-style: preserve-3d; transform: scale(var(--z)); transition: transform .8s var(--ease); }
-.face__photo.is-zoomed .face__layer { --z: 1.8; }
-.face__layer img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
-.face__hotspots { position: absolute; inset: 0; transform: translateZ(24px); }
+.face__photo { position: relative; overflow: hidden; border-radius: var(--r-media); background: #A8AAAA; cursor: grab; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
+.face__photo.is-dragging { cursor: grabbing; }
+.face__photo.is-zoomed { cursor: default; }
+.face__layer { --z: 1; position: relative; transform: scale(var(--z)); transition: transform .8s var(--ease); }
+.face__photo.is-zoomed .face__layer { --z: 1.9; }
+.face__frame { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; pointer-events: none; -webkit-user-drag: none; }
+.face__frame--next { position: absolute; inset: 0; opacity: 0; }
+.face__hotspots { position: absolute; inset: 0; opacity: 0; pointer-events: none; transition: opacity .3s; }
+.face__photo.is-front:not(.is-dragging) .face__hotspots { opacity: 1; pointer-events: auto; }
 .hotspot { position: absolute; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 50%; background: transparent; cursor: pointer; transform: translate(-50%, -50%) scale(calc(1 / var(--z))); transition: transform .8s var(--ease); }
-.hotspot::before { content: ""; position: absolute; inset: 15px; border-radius: 50%; background: #FAFAF9; box-shadow: 0 0 0 1.5px var(--tan), 0 2px 10px rgb(0 0 0 / .25); transition: transform .3s var(--ease), background-color .3s; }
+.hotspot::before { content: ""; position: absolute; inset: 15px; border-radius: 50%; background: #FAFAF9; box-shadow: 0 0 0 1.5px var(--tan), 0 2px 10px rgb(0 0 0 / .25); transition: transform .3s var(--ease); }
 .hotspot::after { content: ""; position: absolute; inset: 8px; border-radius: 50%; border: 1px solid #FAFAF9; opacity: .7; }
 @media (prefers-reduced-motion: no-preference) { .hotspot::after { animation: pulse 2.6s var(--ease) infinite; } }
 @keyframes pulse { from { transform: scale(.6); opacity: .8; } to { transform: scale(1.5); opacity: 0; } }
@@ -157,8 +160,10 @@ ul, ol { padding: 0; list-style: none; }
 .hotspot__label { position: absolute; left: 50%; bottom: calc(100% + 2px); translate: -50% 4px; padding: 6px 12px; border-radius: 999px; background: rgb(17 16 16 / .72); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); color: #FAFAF9; font-size: .8125rem; font-weight: 550; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity .25s, translate .35s var(--ease); }
 .hotspot:hover .hotspot__label, .hotspot:focus-visible .hotspot__label, .hotspot.is-active .hotspot__label { opacity: 1; translate: -50% 0; }
 .face__photo.is-zoomed .hotspot:not(.is-active) { opacity: 0; pointer-events: none; }
-.face__reset { position: absolute; top: 14px; left: 14px; min-height: 40px; padding: 0 16px; border: 0; border-radius: 999px; background: rgb(17 16 16 / .72); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); color: #FAFAF9; font-size: .875rem; font-weight: 550; cursor: pointer; transition: transform .12s ease-out; }
+.face__reset { position: absolute; z-index: 2; top: 14px; left: 14px; min-height: 40px; padding: 0 16px; border: 0; border-radius: 999px; background: rgb(17 16 16 / .72); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); color: #FAFAF9; font-size: .875rem; font-weight: 550; cursor: pointer; transition: transform .12s ease-out; }
 .face__reset:active { transform: scale(.96); }
+.face__hint { position: absolute; left: 50%; bottom: 14px; translate: -50% 0; padding: 6px 14px; border-radius: 999px; background: rgb(17 16 16 / .55); color: #FAFAF9; font-size: .8125rem; font-weight: 500; pointer-events: none; transition: opacity .3s; }
+.face__photo.is-zoomed .face__hint, .face__photo.is-dragging .face__hint { opacity: 0; }
 .face__panel { display: flex; flex-direction: column; gap: 20px; }
 .face__regions { display: flex; flex-wrap: wrap; gap: 8px; }
 .chip { min-height: 44px; padding: 0 16px; border: 1px solid var(--line); border-radius: 999px; background: transparent; font-size: .875rem; font-weight: 500; cursor: pointer; transition: background-color .25s, color .25s, border-color .25s, transform .1s ease-out; }
@@ -171,7 +176,7 @@ ul, ol { padding: 0; list-style: none; }
 .face__info-cta { margin-top: 24px; }
 @media (prefers-reduced-motion: no-preference) { .face__info.is-swap { animation: fadeUp .45s var(--ease); } }
 @media (prefers-reduced-motion: reduce) { .face__layer, .hotspot { transition: none; } }
-@media (prefers-reduced-transparency: reduce) { .hotspot__label, .face__reset { background: #141312; -webkit-backdrop-filter: none; backdrop-filter: none; } }
+@media (prefers-reduced-transparency: reduce) { .hotspot__label, .face__reset, .face__hint { background: #141312; -webkit-backdrop-filter: none; backdrop-filter: none; } }
 @media (max-width: 899px) { .face__stage { grid-template-columns: 1fr; } }
 
 /* bento: 2 itens, 2 celulas de proporcoes diferentes */
@@ -312,14 +317,3 @@ ul, ol { padding: 0; list-style: none; }
 }
 @media (prefers-contrast: more) { :root { --line: color-mix(in srgb, var(--text) 45%, transparent); } }
 
-/* rosto em modo 3D: a foto vira o canvas em relevo; os mesmos pontos ficam por cima */
-.face__photo canvas { z-index: 1; opacity: 0; touch-action: pan-y; cursor: grab; transition: opacity .6s var(--ease); }
-.face__photo canvas:active { cursor: grabbing; }
-.face__photo.is-3d canvas { opacity: 1; }
-.face__tilt { position: relative; z-index: 2; }
-.face__reset { z-index: 3; }
-.face__photo.is-3d .face__tilt { transform: none !important; pointer-events: none; }
-.face__photo.is-3d .face__layer { --z: 1 !important; transform: none !important; }
-.face__photo.is-3d .face__layer img { opacity: 0; transition: opacity .6s var(--ease); }
-.face__photo.is-3d .face__hotspots { transform: none; }
-.face__photo.is-3d .hotspot { pointer-events: auto; transition: none; }

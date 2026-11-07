@@ -107,11 +107,15 @@
     dlg.close();
   });
 
-  // ---------- Rosto interativo: chips, pontos na foto, zoom na regiao e leve inclinacao 3D ----------
+  // ---------- Busto 360: quadros de um giro real (img/busto), arrastar gira com impulso, pontos na vista de frente ----------
+  // 68 quadros a cada 5 graus (0 a 335). De 335 a 360 o video nao fecha a volta: cruza o ultimo com o primeiro.
+  const FRAMES = 68, STEP = 5, SEAM = FRAMES * STEP;
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const regionsBox = $('.face__regions');
   const info = $('.face__info');
   const photo = $('.face__photo');
   const layer = $('.face__layer', photo);
+  const [base, next] = $$('.face__frame', photo);
   const resetBtn = $('.face__reset', photo);
   const intro = { title: $('.face__info-title', info).textContent, text: $('.face__info-text', info).textContent };
   const pick = (key) => document.dispatchEvent(new CustomEvent('region:select', { detail: key }));
@@ -136,39 +140,104 @@
     $('.face__info-text', info).textContent = text;
     info.classList.remove('is-swap'); void info.offsetWidth; info.classList.add('is-swap');
   };
+
+  const src = (i) => `img/busto/${String(i).padStart(2, '0')}.webp`;
+  const loaded = new Array(FRAMES).fill(false);
+  let angle = 0, vel = 0, target = null, dragging = false, focused = null, visible = false, lastInput = -1e9, raf = 0, last = 0;
+  const mod = (a) => ((a % 360) + 360) % 360;
+
+  // desenha o angulo atual: quadro de baixo + o seguinte por cima com opacidade (giro continuo entre quadros)
+  const draw = () => {
+    const a = mod(angle);
+    let i, j, f;
+    if (a >= SEAM - STEP) { i = FRAMES - 1; j = 0; f = (a - (SEAM - STEP)) / (360 - SEAM + STEP); }
+    else { i = Math.floor(a / STEP); j = i + 1; f = (a - i * STEP) / STEP; }
+    const zoomHd = focused && Math.min(a, 360 - a) < 1;
+    const bs = zoomHd ? 'img/busto/front-hd.webp' : loaded[i] ? src(i) : null;
+    if (bs && !base.src.endsWith(bs)) base.src = bs;
+    if (loaded[j] && !zoomHd) { if (!next.src.endsWith(src(j))) next.src = src(j); next.style.opacity = f.toFixed(3); }
+    else next.style.opacity = 0;
+    // os pontos so fazem sentido de frente
+    photo.classList.toggle('is-front', Math.min(a, 360 - a) < 10);
+  };
+
+  const tick = (t) => {
+    const dt = Math.min(0.05, (t - (last || t)) / 1000); last = t;
+    if (target !== null) {
+      // mola criticamente amortecida ate o alvo (sem passar do ponto)
+      const k = 1 - Math.exp(-dt * 9);
+      angle += (target - angle) * k;
+      if (Math.abs(target - angle) < 0.05) { angle = target; target = null; }
+    } else if (!dragging) {
+      if (Math.abs(vel) > 2) { angle += vel * dt; vel *= Math.exp(-dt * 2.6); }
+      else if (!focused && !reduced && performance.now() - lastInput > 2200) angle += 22 * dt;
+    }
+    draw();
+    raf = visible && (target !== null || dragging || Math.abs(vel) > 2 || (!focused && !reduced)) ? requestAnimationFrame(tick) : 0;
+  };
+  const wake = () => { if (!raf && visible) { last = 0; raf = requestAnimationFrame(tick); } };
+
+  // carrega os quadros so quando a secao chega perto, comecando pelos vizinhos da frente
+  new IntersectionObserver(([e]) => {
+    visible = e.isIntersecting;
+    if (visible) wake(); else { cancelAnimationFrame(raf); raf = 0; }
+  }).observe(photo);
+  const preload = new IntersectionObserver(([e]) => {
+    if (!e.isIntersecting) return;
+    preload.disconnect();
+    const order = [...Array(FRAMES).keys()].sort((a, b) => Math.min(a, FRAMES - a) - Math.min(b, FRAMES - b));
+    order.forEach((i) => { const im = new Image(); im.decoding = 'async'; im.onload = () => { loaded[i] = true; }; im.src = src(i); });
+    new Image().src = 'img/busto/front-hd.webp';
+  }, { rootMargin: '400px' });
+  preload.observe(photo);
+
+  // arrastar: 1:1 com o dedo, solta com a velocidade do gesto (impulso)
+  let sx = 0, sa = 0, hist = [];
+  photo.addEventListener('pointerdown', (e) => {
+    if (e.target.closest('button') || focused) return;
+    dragging = true; target = null; vel = 0; photo.setPointerCapture(e.pointerId);
+    sx = e.clientX; sa = angle; hist = [[e.clientX, e.timeStamp]];
+    photo.classList.add('is-dragging'); wake();
+  });
+  photo.addEventListener('pointermove', (e) => {
+    if (!dragging) return;
+    angle = sa + (e.clientX - sx) * (360 / (photo.clientWidth * 1.6));
+    hist.push([e.clientX, e.timeStamp]); if (hist.length > 6) hist.shift();
+    lastInput = performance.now();
+  });
+  const release = () => {
+    if (!dragging) return;
+    dragging = false; photo.classList.remove('is-dragging');
+    const [x0, t0] = hist[0], [x1, t1] = hist[hist.length - 1];
+    vel = reduced || t1 === t0 ? 0 : ((x1 - x0) / (t1 - t0)) * 1000 * (360 / (photo.clientWidth * 1.6));
+    lastInput = performance.now(); wake();
+  };
+  photo.addEventListener('pointerup', release);
+  photo.addEventListener('pointercancel', release);
+  photo.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+      e.preventDefault(); target = (target ?? angle) + (e.key === 'ArrowRight' ? 15 : -15); lastInput = performance.now();
+      if (reduced) { angle = target; target = null; draw(); } else wake();
+    }
+    if (e.key === 'Escape' && focused) pick(null);
+  });
+
   document.addEventListener('region:select', ({ detail: key }) => {
     const r = S.regioes[key];
+    focused = r ? key : null;
     $$('.chip', regionsBox).forEach((c) => c.setAttribute('aria-pressed', String(c.dataset.region === key)));
     $$('.hotspot', photo).forEach((h) => h.classList.toggle('is-active', h.dataset.region === key));
-    if (!r) { photo.classList.remove('is-zoomed'); resetBtn.hidden = true; swap(intro.title, intro.text); return; }
-    // o zoom parte do ponto escolhido: a foto aproxima "em direcao" a regiao
+    lastInput = performance.now();
+    if (!r) { photo.classList.remove('is-zoomed'); resetBtn.hidden = true; swap(intro.title, intro.text); wake(); draw(); return; }
+    // gira pelo caminho mais curto ate a frente e aproxima da regiao
+    vel = 0; target = Math.round(angle / 360) * 360;
     layer.style.transformOrigin = `${r.pos[0]}% ${r.pos[1]}%`;
     photo.classList.add('is-zoomed'); resetBtn.hidden = false;
     swap(r.nome, r.texto);
+    if (reduced) { angle = target; target = null; draw(); } else wake();
   });
   resetBtn.addEventListener('click', () => pick(null));
-  photo.addEventListener('keydown', (e) => { if (e.key === 'Escape' && photo.classList.contains('is-zoomed')) pick(null); });
-
-  // inclinacao: so com mouse e sem movimento reduzido; segue o ponteiro com amortecimento (rAF, sem scroll listener)
-  if (matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)').matches) {
-    const tilt = $('.face__tilt', photo);
-    const cur = { x: 0, y: 0 }, tgt = { x: 0, y: 0 };
-    let raf = 0;
-    const step = () => {
-      cur.x += (tgt.x - cur.x) * 0.12; cur.y += (tgt.y - cur.y) * 0.12;
-      tilt.style.transform = `rotateX(${cur.y.toFixed(3)}deg) rotateY(${cur.x.toFixed(3)}deg)`;
-      raf = Math.abs(tgt.x - cur.x) + Math.abs(tgt.y - cur.y) > 0.01 ? requestAnimationFrame(step) : 0;
-    };
-    const kick = () => { if (!raf) raf = requestAnimationFrame(step); };
-    photo.addEventListener('pointermove', (e) => {
-      if (photo.classList.contains('is-3d')) return; // o 3D cuida da inclinacao
-      const b = photo.getBoundingClientRect();
-      tgt.x = ((e.clientX - b.left) / b.width - 0.5) * 8;
-      tgt.y = -((e.clientY - b.top) / b.height - 0.5) * 8;
-      kick();
-    });
-    photo.addEventListener('pointerleave', () => { tgt.x = 0; tgt.y = 0; kick(); });
-  }
+  draw();
 
   // ---------- Resultados (so com fotos reais e autorizadas do config) ----------
   const hasResults = S.antesDepois.length || S.galeria.length || S.depoimentos.length;

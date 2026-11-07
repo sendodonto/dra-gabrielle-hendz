@@ -132,18 +132,18 @@
     <div class="wrap">
       <header class="section-head reveal">
         <h2 class="h2" id="face-title">Conheça as possibilidades de valorizar sua beleza.</h2>
-        <p class="lead">Toque nas regiões do rosto para conhecer cada uma. Imagem ilustrativa: a indicação de qualquer procedimento depende de avaliação.</p>
+        <p class="lead">Gire o busto e toque nas regiões para conhecer cada uma. Modelo ilustrativo: a indicação de qualquer procedimento depende de avaliação.</p>
       </header>
 
       <div class="face__stage reveal">
-        <div class="face__photo" data-scene="face">
-          <div class="face__tilt">
-            <div class="face__layer">
-              <img src="img/facial-800.webp" srcset="img/facial-800.webp 800w, img/facial.webp 1400w" sizes="(max-width: 899px) 92vw, 46vw" width="1400" height="1750" loading="lazy" decoding="async" alt="Retrato feminino de frente, usado para mostrar as regiões do rosto (foto provisória)">
-              <div class="face__hotspots"></div>
-            </div>
+        <div class="face__photo" tabindex="0" aria-label="Busto 3D: arraste ou use as setas para girar">
+          <div class="face__layer">
+            <img class="face__frame" src="img/busto/00.webp" width="640" height="800" decoding="async" alt="Busto feminino em cerâmica, vista de frente (imagem ilustrativa)">
+            <img class="face__frame face__frame--next" src="img/busto/01.webp" width="640" height="800" decoding="async" alt="" aria-hidden="true">
+            <div class="face__hotspots"></div>
           </div>
           <button class="face__reset" type="button" hidden>Ver rosto inteiro</button>
+          <p class="face__hint" aria-hidden="true">Arraste para girar</p>
         </div>
         <aside class="face__panel" aria-live="polite">
           <div class="face__regions" role="group" aria-label="Regiões do rosto"></div>
