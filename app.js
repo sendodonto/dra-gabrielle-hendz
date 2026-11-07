@@ -117,7 +117,9 @@
   const photo = $('.face__photo');
   const layer = $('.face__layer', photo);
   const cv = $('.face__canvas', photo), ctx = cv.getContext('2d');
-  const hd = $('.face__hd', photo);
+  // versao HD da frente para o zoom: entra no DOM so quando alguem escolhe uma regiao
+  const hd = new Image();
+  hd.className = 'face__hd'; hd.alt = ''; hd.decoding = 'async'; hd.setAttribute('aria-hidden', 'true');
   const resetBtn = $('.face__reset', photo);
   const intro = { title: $('.face__info-title', info).textContent, text: $('.face__info-text', info).textContent };
   const pick = (key) => document.dispatchEvent(new CustomEvent('region:select', { detail: key }));
@@ -246,7 +248,7 @@
     if (!r) { photo.classList.remove('is-zoomed'); resetBtn.hidden = true; swap(intro.title, intro.text); wake(); draw(); return; }
     // gira pelo caminho mais curto ate a frente e aproxima da regiao
     vel = 0; target = Math.round(angle / 360) * 360;
-    if (!hd.src) hd.src = 'img/busto/front-hd.webp';
+    if (!hd.isConnected) { hd.src = 'img/busto/front-hd.webp'; cv.after(hd); }
     layer.style.transformOrigin = `${r.pos[0]}% ${r.pos[1]}%`;
     photo.classList.add('is-zoomed'); resetBtn.hidden = false;
     swap(r.nome, r.texto);
