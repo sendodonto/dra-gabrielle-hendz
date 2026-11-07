@@ -107,15 +107,17 @@
     dlg.close();
   });
 
-  // ---------- Busto 360: quadros de um giro real (img/busto), arrastar gira com impulso, pontos na vista de frente ----------
-  // 68 quadros a cada 5 graus (0 a 335). De 335 a 360 o video nao fecha a volta: cruza o ultimo com o primeiro.
-  const FRAMES = 68, STEP = 5, SEAM = FRAMES * STEP;
+  // ---------- Busto 360: quadros de um giro real (img/busto) desenhados num canvas; arrastar gira com impulso ----------
+  // ANG = angulo de cada quadro (o video acelera, entao nao e uniforme). De 340 a 360 o video nao fecha a volta: cruza o ultimo com o primeiro.
+  const ANG = [0,2.3,4.7,7.1,9.4,11.8,14.1,16.3,18.6,20.9,23.1,25.4,27.8,30.2,32.6,34.9,37.2,39.5,41.8,44.2,46.6,49,51.5,54,56.4,58.8,61.2,63.5,65.7,67.9,70.1,72.3,74.8,77.9,81.5,83.4,85.4,87.5,89.5,91.7,93.9,96.1,98.3,100.6,103,105.2,107.5,109.8,112.2,114.5,116.9,119.2,121.6,124,126.5,129.1,131.6,134.2,136.8,139.4,141.9,144.5,147,149.6,152.1,154.7,157.3,159.8,162.2,164.5,166.7,168.9,171.1,173.3,175.4,177.5,179.5,181.4,184.9,188.3,191.7,195.5,197.5,199.6,201.6,203.7,205.9,208,210.2,212.3,214.7,216.8,218.9,221.1,223.3,225.5,227.8,230,232.1,234.4,236.5,238.7,240.8,243,245.1,247.2,249.3,251.5,253.5,255.5,257.6,259.7,261.8,263.9,265.9,268,270,273.9,275.9,277.8,281.6,283.6,285.6,289.5,291.5,293.5,295.5,297.5,299.6,301.7,303.7,305.8,307.9,310,312.1,314.1,316.2,318.3,320.4,322.4,324.5,326.5,330.4,332.3,336.1,340];
+  const N = ANG.length, AUTO = 18;
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const regionsBox = $('.face__regions');
   const info = $('.face__info');
   const photo = $('.face__photo');
   const layer = $('.face__layer', photo);
-  const [base, next] = $$('.face__frame', photo);
+  const cv = $('.face__canvas', photo), ctx = cv.getContext('2d');
+  const hd = $('.face__hd', photo);
   const resetBtn = $('.face__reset', photo);
   const intro = { title: $('.face__info-title', info).textContent, text: $('.face__info-text', info).textContent };
   const pick = (key) => document.dispatchEvent(new CustomEvent('region:select', { detail: key }));
@@ -141,53 +143,65 @@
     info.classList.remove('is-swap'); void info.offsetWidth; info.classList.add('is-swap');
   };
 
-  const src = (i) => `img/busto/${String(i).padStart(2, '0')}.webp`;
-  const loaded = new Array(FRAMES).fill(false);
-  let angle = 0, vel = 0, target = null, dragging = false, focused = null, visible = false, lastInput = -1e9, raf = 0, last = 0;
-  const mod = (a) => ((a % 360) + 360) % 360;
+  const src = (i) => `img/busto/${String(i).padStart(3, '0')}.webp`;
+  const imgs = new Array(N);
+  let angle = 0, vel = 0, dir = 1, target = null, dragging = false, focused = null, visible = false, lastInput = -1e9, raf = 0, last = 0;
+  const mod = (x) => ((x % 360) + 360) % 360;
+  const near = (i, step) => { for (let k = 0; k < N; k++) { const q = (i + k * step + N) % N; if (imgs[q]) return imgs[q]; } return null; };
 
-  // desenha o angulo atual: quadro de baixo + o seguinte por cima com opacidade (giro continuo entre quadros)
-  const draw = () => {
-    const a = mod(angle);
-    let i, j, f;
-    if (a >= SEAM - STEP) { i = FRAMES - 1; j = 0; f = (a - (SEAM - STEP)) / (360 - SEAM + STEP); }
-    else { i = Math.floor(a / STEP); j = i + 1; f = (a - i * STEP) / STEP; }
-    const zoomHd = focused && Math.min(a, 360 - a) < 1;
-    const bs = zoomHd ? 'img/busto/front-hd.webp' : loaded[i] ? src(i) : null;
-    if (bs && !base.src.endsWith(bs)) base.src = bs;
-    if (loaded[j] && !zoomHd) { if (!next.src.endsWith(src(j))) next.src = src(j); next.style.opacity = f.toFixed(3); }
-    else next.style.opacity = 0;
-    // os pontos so fazem sentido de frente
-    photo.classList.toggle('is-front', Math.min(a, 360 - a) < 10);
-  };
+  new ResizeObserver(() => {
+    const dpr = Math.min(devicePixelRatio || 1, 2);
+    cv.width = Math.round(cv.clientWidth * dpr); cv.height = Math.round(cv.clientHeight * dpr);
+    draw();
+  }).observe(cv);
+
+  // desenha o angulo atual: quadro de baixo + o seguinte por cima com a fracao (giro continuo)
+  function draw() {
+    const x = mod(angle);
+    let lo = 0, hi = N - 1;
+    while (lo < hi) { const m = (lo + hi + 1) >> 1; if (ANG[m] <= x) lo = m; else hi = m - 1; }
+    const i = lo, j = (i + 1) % N;
+    const span = j === 0 ? 360 - ANG[i] : ANG[j] - ANG[i];
+    const f = Math.min(1, (x - ANG[i]) / span);
+    const A = near(i, -1), B = near(j, 1);
+    if (A && cv.width) {
+      ctx.globalAlpha = 1; ctx.drawImage(A, 0, 0, cv.width, cv.height);
+      if (B && B !== A && f > 0.002) { ctx.globalAlpha = f; ctx.drawImage(B, 0, 0, cv.width, cv.height); }
+    }
+    const off = Math.min(x, 360 - x);
+    photo.classList.toggle('is-front', off < 10); // os pontos so fazem sentido de frente
+    photo.classList.toggle('is-hd', !!focused && off < 1);
+  }
 
   const tick = (t) => {
     const dt = Math.min(0.05, (t - (last || t)) / 1000); last = t;
     if (target !== null) {
       // mola criticamente amortecida ate o alvo (sem passar do ponto)
-      const k = 1 - Math.exp(-dt * 9);
-      angle += (target - angle) * k;
+      angle += (target - angle) * (1 - Math.exp(-dt * 9));
       if (Math.abs(target - angle) < 0.05) { angle = target; target = null; }
     } else if (!dragging) {
-      if (Math.abs(vel) > 2) { angle += vel * dt; vel *= Math.exp(-dt * 2.6); }
-      else if (!focused && !reduced && performance.now() - lastInput > 2200) angle += 22 * dt;
+      // uma so velocidade: o impulso desacelera ate parar e, ocioso, o giro automatico volta acelerando suave
+      const idle = !focused && !reduced && performance.now() - lastInput > 2200;
+      const vT = idle ? AUTO * dir : 0;
+      vel += (vT - vel) * (1 - Math.exp(-dt * (idle ? 0.9 : 2.4)));
+      angle += vel * dt;
     }
     draw();
-    raf = visible && (target !== null || dragging || Math.abs(vel) > 2 || (!focused && !reduced)) ? requestAnimationFrame(tick) : 0;
+    raf = visible && (target !== null || dragging || Math.abs(vel) > 0.3 || (!focused && !reduced)) ? requestAnimationFrame(tick) : 0;
   };
   const wake = () => { if (!raf && visible) { last = 0; raf = requestAnimationFrame(tick); } };
 
-  // carrega os quadros so quando a secao chega perto, comecando pelos vizinhos da frente
   new IntersectionObserver(([e]) => {
     visible = e.isIntersecting;
     if (visible) wake(); else { cancelAnimationFrame(raf); raf = 0; }
   }).observe(photo);
+  // carrega so perto da secao, em camadas (1 a cada 32, 16, 8...): o giro funciona cedo e vai ficando mais fino
   const preload = new IntersectionObserver(([e]) => {
     if (!e.isIntersecting) return;
     preload.disconnect();
-    const order = [...Array(FRAMES).keys()].sort((a, b) => Math.min(a, FRAMES - a) - Math.min(b, FRAMES - b));
-    order.forEach((i) => { const im = new Image(); im.decoding = 'async'; im.onload = () => { loaded[i] = true; }; im.src = src(i); });
-    new Image().src = 'img/busto/front-hd.webp';
+    const order = [], seen = new Set();
+    for (const step of [32, 16, 8, 4, 2, 1]) for (let i = 0; i < N; i += step) if (!seen.has(i)) { seen.add(i); order.push(i); }
+    order.forEach((i) => { const im = new Image(); im.src = src(i); im.decode().then(() => { imgs[i] = im; if (!raf) draw(); }, () => {}); });
   }, { rootMargin: '400px' });
   preload.observe(photo);
 
@@ -210,6 +224,7 @@
     dragging = false; photo.classList.remove('is-dragging');
     const [x0, t0] = hist[0], [x1, t1] = hist[hist.length - 1];
     vel = reduced || t1 === t0 ? 0 : ((x1 - x0) / (t1 - t0)) * 1000 * (360 / (photo.clientWidth * 1.6));
+    if (Math.abs(vel) > 1) dir = Math.sign(vel);
     lastInput = performance.now(); wake();
   };
   photo.addEventListener('pointerup', release);
@@ -231,6 +246,7 @@
     if (!r) { photo.classList.remove('is-zoomed'); resetBtn.hidden = true; swap(intro.title, intro.text); wake(); draw(); return; }
     // gira pelo caminho mais curto ate a frente e aproxima da regiao
     vel = 0; target = Math.round(angle / 360) * 360;
+    if (!hd.src) hd.src = 'img/busto/front-hd.webp';
     layer.style.transformOrigin = `${r.pos[0]}% ${r.pos[1]}%`;
     photo.classList.add('is-zoomed'); resetBtn.hidden = false;
     swap(r.nome, r.texto);

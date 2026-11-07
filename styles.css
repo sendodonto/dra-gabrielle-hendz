@@ -147,7 +147,9 @@ ul, ol { padding: 0; list-style: none; }
 .face__layer { --z: 1; position: relative; transform: scale(var(--z)); transition: transform .8s var(--ease); }
 .face__photo.is-zoomed .face__layer { --z: 1.9; }
 .face__frame { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; pointer-events: none; -webkit-user-drag: none; }
-.face__frame--next { position: absolute; inset: 0; opacity: 0; }
+.face__canvas, .face__hd { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.face__hd { object-fit: cover; opacity: 0; transition: opacity .35s var(--ease); }
+.face__photo.is-hd .face__hd[src] { opacity: 1; }
 .face__hotspots { position: absolute; inset: 0; opacity: 0; pointer-events: none; transition: opacity .3s; }
 .face__photo.is-front:not(.is-dragging) .face__hotspots { opacity: 1; pointer-events: auto; }
 .hotspot { position: absolute; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 50%; background: transparent; cursor: pointer; transform: translate(-50%, -50%) scale(calc(1 / var(--z))); transition: transform .8s var(--ease); }

@@ -23,5 +23,5 @@ img/          fotos PROVISÓRIAS (Pexels) — trocar pelas da Dra.
 7. **Domínio**: `canonical` e `og` apontam para o GitHub Pages.
 
 ## O 3D
-- Busto 360: 68 quadros de um vídeo de giro (gerado no Google Flow) em `img/busto/` (00 a 67, um a cada 5°) + `front-hd.webp` para o zoom. Arrastar gira com impulso, gira sozinho quando ninguém mexe, setas do teclado também giram. Escolher uma região gira até a frente e aproxima. Os pontos ficam em `regioes[*].pos` no config (% do quadro de frente `00.webp`).
+- Busto 360: 146 quadros de um vídeo de giro (gerado no Google Flow) em `img/busto/` (000 a 145, ~2,3° entre eles; o ângulo de cada um fica em `ANG` no app.js) + `front-hd.webp` para o zoom. Desenhados num canvas, carregam em camadas. Arrastar gira com impulso, gira sozinho quando ninguém mexe, setas do teclado também giram. Escolher uma região gira até a frente e aproxima. Os pontos ficam em `regioes[*].pos` no config (% do quadro de frente `000.webp`).
 - Cada cena carrega perto da tela e pausa fora dela. Movimento reduzido: sem rotação automática. Sem WebGL: os botões das regiões continuam funcionando. Aparelho fraco: menos polígonos e resolução menor.

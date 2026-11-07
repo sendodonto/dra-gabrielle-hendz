@@ -13,7 +13,7 @@ window.SITE = {
   procedimentos: ['Harmonização facial', 'Procedimentos para glúteos', 'Método Bumbum Master', 'Estética facial', 'Cursos e mentorias', 'Ainda não sei, quero uma avaliação'],
 
   // Regiões do rosto interativo. "texto" é educativo: nada de promessa de resultado.
-  // "pos" = posição do ponto no busto de frente (img/busto/00.webp), em % [largura, altura]. Trocou o busto? Ajuste os pontos.
+  // "pos" = posição do ponto no busto de frente (img/busto/000.webp), em % [largura, altura]. Trocou o busto? Ajuste os pontos.
   // Troque "texto" pelos procedimentos que a Dra. realiza em cada região.
   regioes: {
     labios: { nome: 'Lábios', pos: [47, 46], texto: 'Região que pode ser avaliada dentro da harmonização facial, sempre respeitando as proporções naturais do rosto.' },
