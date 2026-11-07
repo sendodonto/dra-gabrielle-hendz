@@ -164,9 +164,11 @@
     while (lo < hi) { const m = (lo + hi + 1) >> 1; if (ANG[m] <= x) lo = m; else hi = m - 1; }
     const i = lo, j = (i + 1) % N;
     const span = j === 0 ? 360 - ANG[i] : ANG[j] - ANG[i];
-    const f = Math.min(1, (x - ANG[i]) / span);
+    // so mistura os dois quadros num trecho curto no meio: no resto do tempo aparece um quadro so, nitido
+    const f = Math.min(1, Math.max(0, ((x - ANG[i]) / span - 0.4) / 0.2));
     const A = near(i, -1), B = near(j, 1);
     if (A && cv.width) {
+      ctx.imageSmoothingQuality = 'high';
       ctx.globalAlpha = 1; ctx.drawImage(A, 0, 0, cv.width, cv.height);
       if (B && B !== A && f > 0.002) { ctx.globalAlpha = f; ctx.drawImage(B, 0, 0, cv.width, cv.height); }
     }
