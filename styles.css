@@ -153,7 +153,7 @@ ul, ol { padding: 0; list-style: none; }
 @media (prefers-reduced-motion: no-preference) { .hotspot::after { animation: pulse 2.6s var(--ease) infinite; } }
 @keyframes pulse { from { transform: scale(.6); opacity: .8; } to { transform: scale(1.5); opacity: 0; } }
 .hotspot:active::before { transform: scale(1.1); transition-duration: .1s; }
-.hotspot:hover::before, .hotspot.is-active::before { transform: scale(1.4); background: var(--tan); }
+.hotspot:hover::before, .hotspot.is-active::before { transform: scale(1.4); box-shadow: 0 0 0 3px var(--tan), 0 2px 12px rgb(0 0 0 / .3); }
 .hotspot__label { position: absolute; left: 50%; bottom: calc(100% + 2px); translate: -50% 4px; padding: 6px 12px; border-radius: 999px; background: rgb(17 16 16 / .72); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); color: #FAFAF9; font-size: .8125rem; font-weight: 550; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity .25s, translate .35s var(--ease); }
 .hotspot:hover .hotspot__label, .hotspot:focus-visible .hotspot__label, .hotspot.is-active .hotspot__label { opacity: 1; translate: -50% 0; }
 .face__photo.is-zoomed .hotspot:not(.is-active) { opacity: 0; pointer-events: none; }
@@ -311,3 +311,15 @@ ul, ol { padding: 0; list-style: none; }
   .book::backdrop { -webkit-backdrop-filter: none; backdrop-filter: none; }
 }
 @media (prefers-contrast: more) { :root { --line: color-mix(in srgb, var(--text) 45%, transparent); } }
+
+/* rosto em modo 3D: a foto vira o canvas em relevo; os mesmos pontos ficam por cima */
+.face__photo canvas { z-index: 1; opacity: 0; touch-action: pan-y; cursor: grab; transition: opacity .6s var(--ease); }
+.face__photo canvas:active { cursor: grabbing; }
+.face__photo.is-3d canvas { opacity: 1; }
+.face__tilt { position: relative; z-index: 2; }
+.face__reset { z-index: 3; }
+.face__photo.is-3d .face__tilt { transform: none !important; pointer-events: none; }
+.face__photo.is-3d .face__layer { --z: 1 !important; transform: none !important; }
+.face__photo.is-3d .face__layer img { opacity: 0; transition: opacity .6s var(--ease); }
+.face__photo.is-3d .face__hotspots { transform: none; }
+.face__photo.is-3d .hotspot { pointer-events: auto; transition: none; }

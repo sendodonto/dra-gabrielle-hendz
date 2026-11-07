@@ -8,7 +8,7 @@ config.js     ÚNICO arquivo de conteúdo: WhatsApp, Instagram, CRBM, procedimen
 index.html    todas as seções e SEO
 styles.css    identidade: quase-preto + tan, tema claro/escuro automático, fonte Satoshi (fonts/)
 app.js        menu, header, agendamento, painel das regiões, resultados, lightbox
-scenes.js     3D: escultura do hero e curvas do Bumbum Master
+scenes.js     3D: escultura do hero, rosto (foto em relevo) e curvas do Bumbum Master
 privacidade.html
 img/          fotos PROVISÓRIAS (Pexels) — trocar pelas da Dra.
 ```
@@ -23,5 +23,5 @@ img/          fotos PROVISÓRIAS (Pexels) — trocar pelas da Dra.
 7. **Domínio**: `canonical` e `og` apontam para o GitHub Pages.
 
 ## O 3D
-- Rosto interativo: foto real (`img/facial.webp`) com 5 pontos clicáveis, zoom na região escolhida e leve inclinação com o mouse. Os pontos ficam em `regioes[*].pos` no config (% da largura e da altura da foto): se trocar a foto, ajuste os pontos. Os chips ao lado fazem o mesmo (acessível por teclado).
+- Rosto 3D: a foto real (`img/facial.webp`) vira uma superfície em relevo (`FACE_DEPTH` em scenes.js, feito para esta foto). Arrastar gira, o mouse inclina de leve, escolher uma região leva a câmera até ela. Sem WebGL, fica a foto com os mesmos pontos. Os pontos ficam em `regioes[*].pos` no config (% da largura e da altura da foto): se trocar a foto, ajuste os pontos e o relevo. Os chips ao lado fazem o mesmo (acessível por teclado).
 - Cada cena carrega perto da tela e pausa fora dela. Movimento reduzido: sem rotação automática. Sem WebGL: os botões das regiões continuam funcionando. Aparelho fraco: menos polígonos e resolução menor.

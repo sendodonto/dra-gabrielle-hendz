@@ -161,6 +161,7 @@
     };
     const kick = () => { if (!raf) raf = requestAnimationFrame(step); };
     photo.addEventListener('pointermove', (e) => {
+      if (photo.classList.contains('is-3d')) return; // o 3D cuida da inclinacao
       const b = photo.getBoundingClientRect();
       tgt.x = ((e.clientX - b.left) / b.width - 0.5) * 8;
       tgt.y = -((e.clientY - b.top) / b.height - 0.5) * 8;
