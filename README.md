@@ -1,14 +1,13 @@
 # Dra. Gabrielle Hendz — landing page
 
-HTML, CSS e JS puros, sem build. O 3D usa three.js 0.170 por importmap (jsDelivr).
+HTML, CSS e JS puros, sem build e sem dependências.
 
 ```
 config.js     ÚNICO arquivo de conteúdo: WhatsApp, Instagram, CRBM, procedimentos,
-              textos das regiões do rosto, resultados, galeria e depoimentos
+              resultados, galeria e depoimentos
 index.html    todas as seções e SEO
-styles.css    identidade: quase-preto + tan, tema claro/escuro automático, fonte Satoshi (fonts/)
-app.js        menu, header, agendamento, painel das regiões, resultados, lightbox
-scenes.js     3D: escultura do hero e curvas do Bumbum Master (o busto fica em app.js, sem three.js)
+styles.css    identidade: clínico claro, azul-gelo + azul-marinho + acento azul, fonte Satoshi (fonts/)
+app.js        menu, header, agendamento, resultados, lightbox
 privacidade.html
 img/          fotos PROVISÓRIAS (Pexels) — trocar pelas da Dra.
 ```
@@ -16,12 +15,9 @@ img/          fotos PROVISÓRIAS (Pexels) — trocar pelas da Dra.
 ## Antes de publicar de verdade
 1. **WhatsApp**: `whatsapp` no `config.js` (55 + DDD + número). Vazio, o agendamento copia a mensagem e abre o Direct do Instagram.
 2. **Fotos**: todas provisórias. Troque mantendo os nomes: `hero.webp` (retrato vertical da Dra.), `sobre.webp`, `cursos.webp`, `gluteos.webp`, `estetica.webp`, `og.jpg` (1200x630).
-3. **Textos das regiões do rosto** (`regioes` no config): hoje são educativos e genéricos. Troque pelos procedimentos que a Dra. confirmar.
+3. **Regiões da Harmonização Facial**: as etiquetas do card (Lábios, Queixo...) ficam no index.html (comentário TROCAR). Ajuste quando a Dra. confirmar.
 4. **Bumbum Master**: o texto e os 3 passos são estrutura; a Dra. precisa descrever o método (comentário TROCAR no index.html).
 5. **Resultados**: só fotos reais e autorizadas. Preencha `antesDepois`, `galeria`, `depoimentos` no config; enquanto vazios a seção mostra "em breve".
 6. **Cursos e mentorias**: os cards levam ao agendamento; quando houver links de inscrição, troque o botão por um link.
 7. **Domínio**: `canonical` e `og` apontam para o GitHub Pages.
 
-## O 3D
-- Busto 360: 146 quadros de um vídeo de giro (gerado no Google Flow) em `img/busto/` (000 a 145, ~2,3° entre eles; o ângulo de cada um fica em `ANG` no app.js) + `front-hd.webp` para o zoom. Desenhados num canvas, carregam em camadas. Arrastar gira com impulso, gira sozinho quando ninguém mexe, setas do teclado também giram. Escolher uma região gira até a frente e aproxima. Os pontos ficam em `regioes[*].pos` no config (% do quadro de frente `000.webp`).
-- Cada cena carrega perto da tela e pausa fora dela. Movimento reduzido: sem rotação automática. Sem WebGL: os botões das regiões continuam funcionando. Aparelho fraco: menos polígonos e resolução menor.
